@@ -566,6 +566,26 @@ h2 {
   margin: 0;
 }
 
+.detalhe-precos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--espaco-3);
+}
+
+.detalhe-precos .preco-original {
+  font-size: 1rem;
+}
+
+.preco-original + .detalhe-preco {
+  color: var(--cor-destaque);
+}
+
+.detalhe-preco-em-breve {
+  font-size: 1.5rem;
+  color: var(--cor-alerta);
+}
+
 .detalhe-descricao {
   margin: 0;
   color: var(--cor-texto-suave);

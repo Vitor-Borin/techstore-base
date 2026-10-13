@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router'
 import AvisoEstoque from '../components/AvisoEstoque'
+import Avaliacao from '../components/Avaliacao'
 import ProdutoCard from '../components/ProdutoCard'
 import { formatarPreco } from '../utils/formatarPreco'
 import { estaEsgotado, podeVender, temPreco } from '../utils/produtos'
@@ -45,12 +46,18 @@ export default function PaginaProduto({ produtos, avisos, onAdicionar, onAvisar 
 
         <div className="detalhe-info">
           <h1>{produto.title}</h1>
-          <p className="card-avaliacao">
-            ★ {produto.rating.rate} <span>({produto.rating.count} avaliações)</span>
-          </p>
-          <p className="detalhe-preco">
-            {temPreco(produto) ? formatarPreco(produto.price) : 'Preço em breve'}
-          </p>
+          <Avaliacao rating={produto.rating} />
+          {/* Regra de promoções: preço original riscado ao lado do preço atual */}
+          {temPreco(produto) ? (
+            <div className="detalhe-precos">
+              {produto.precoOriginal && (
+                <span className="preco-original">{formatarPreco(produto.precoOriginal)}</span>
+              )}
+              <p className="detalhe-preco">{formatarPreco(produto.price)}</p>
+            </div>
+          ) : (
+            <p className="detalhe-preco detalhe-preco-em-breve">Preço em breve</p>
+          )}
           <p className="detalhe-descricao">{produto.description}</p>
           {esgotado && (
             <p className="detalhe-estoque detalhe-estoque-esgotado">Esgotado no momento</p>
