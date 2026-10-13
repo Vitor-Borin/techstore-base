@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import ProdutoCard from '../components/ProdutoCard'
+import { estaEsgotado } from '../utils/produtos'
 
 const CATEGORIAS = [
   { id: 'todas', nome: 'Todas' },
@@ -11,15 +12,15 @@ const CATEGORIAS = [
 
 export default function Loja({ produtos, onAdicionar }) {
   const [categoria, setCategoria] = useState('todas')
-  const [produtosVisiveis, setProdutosVisiveis] = useState(produtos)
 
-  useEffect(() => {
-    if (categoria === 'todas') {
-      setProdutosVisiveis(produtos)
-    } else {
-      setProdutosVisiveis(produtos.filter((produto) => produto.category === categoria))
-    }
-  }, [categoria, produtos])
+  // Produto esgotado não aparece mais na loja (pedido do comercial, 7 de outubro).
+  // A lista é calculada a cada renderização a partir de produtos e categoria,
+  // então não precisa de estado nem de useEffect.
+  const disponiveis = produtos.filter((produto) => !estaEsgotado(produto))
+  const produtosVisiveis =
+    categoria === 'todas'
+      ? disponiveis
+      : disponiveis.filter((produto) => produto.category === categoria)
 
   return (
     <section>

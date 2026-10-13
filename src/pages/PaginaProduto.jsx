@@ -1,8 +1,9 @@
 import { Link, useParams } from 'react-router'
+import AvisoEstoque from '../components/AvisoEstoque'
 import { formatarPreco } from '../utils/formatarPreco'
-import { podeVender, temPreco } from '../utils/produtos'
+import { estaEsgotado, podeVender, temPreco } from '../utils/produtos'
 
-export default function PaginaProduto({ produtos, onAdicionar }) {
+export default function PaginaProduto({ produtos, avisos, onAdicionar, onAvisar }) {
   const { id } = useParams()
   const produto = produtos.find((item) => item.id === id)
 
@@ -17,8 +18,15 @@ export default function PaginaProduto({ produtos, onAdicionar }) {
     )
   }
 
+  const esgotado = estaEsgotado(produto)
+
+  // Esgotado não aparece na loja, então também fica fora dos relacionados.
+  // A página dele continua abrindo pelo link direto (links divulgados pelo marketing).
   const relacionados = produtos
-    .filter((item) => item.category === produto.category && item.id !== produto.id)
+    .filter(
+      (item) =>
+        item.category === produto.category && item.id !== produto.id && !estaEsgotado(item)
+    )
     .slice(0, 4)
 
   return (
@@ -43,21 +51,30 @@ export default function PaginaProduto({ produtos, onAdicionar }) {
             {temPreco(produto) ? formatarPreco(produto.price) : 'Preço em breve'}
           </p>
           <p className="detalhe-descricao">{produto.description}</p>
-          {temPreco(produto) ? (
+          {esgotado && (
+            <p className="detalhe-estoque detalhe-estoque-esgotado">Esgotado no momento</p>
+          )}
+          {!esgotado && temPreco(produto) && (
             <p className="detalhe-estoque">{produto.estoque} unidades disponíveis</p>
-          ) : (
+          )}
+          {!temPreco(produto) && (
             <p className="detalhe-estoque detalhe-estoque-aviso">
               Chega em breve: o preço deste produto ainda está sendo definido.
             </p>
           )}
 
-          <button
-            className="botao botao-grande"
-            onClick={() => onAdicionar(produto)}
-            disabled={!podeVender(produto)}
-          >
-            Adicionar ao carrinho
-          </button>
+          {/* key: ao trocar de produto, o formulário começa do zero */}
+          {esgotado ? (
+            <AvisoEstoque key={produto.id} produto={produto} avisos={avisos} onAvisar={onAvisar} />
+          ) : (
+            <button
+              className="botao botao-grande"
+              onClick={() => onAdicionar(produto)}
+              disabled={!podeVender(produto)}
+            >
+              Adicionar ao carrinho
+            </button>
+          )}
 
           <ul className="detalhe-garantias">
             <li>Troca grátis em até 30 dias</li>
@@ -66,7 +83,7 @@ export default function PaginaProduto({ produtos, onAdicionar }) {
         </div>
       </div>
 
-      <h2>Produtos relacionados</h2>
+      {relacionados.length > 0 && <h2>Produtos relacionados</h2>}
       <div className="grade">
         {relacionados.map((item) => (
           <article key={item.id} className="card">

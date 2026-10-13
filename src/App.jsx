@@ -9,6 +9,7 @@ import Carrinho from './pages/Carrinho'
 import Estoque from './pages/Estoque'
 import { buscarProdutos } from './services/produtos'
 import { buscarClientes } from './services/clientes'
+import { carregarAvisos, salvarAvisos } from './services/avisos'
 import { podeVender } from './utils/produtos'
 
 export default function App() {
@@ -18,6 +19,12 @@ export default function App() {
   const [carrinho, setCarrinho] = useState([])
   const [clientes, setClientes] = useState([])
   const [clienteAtualId, setClienteAtualId] = useState(null)
+  // Lista de espera dos esgotados: a página do produto grava e a área interna lê, por isso fica aqui
+  const [avisos, setAvisos] = useState(() => carregarAvisos())
+
+  useEffect(() => {
+    salvarAvisos(avisos)
+  }, [avisos])
 
   useEffect(() => {
     buscarProdutos()
@@ -35,6 +42,10 @@ export default function App() {
     // Todo botão de compra passa por aqui, então a regra de venda vale para a loja inteira
     if (!podeVender(produto)) return
     setCarrinho((anterior) => anterior.concat(produto))
+  }
+
+  function registrarAviso(aviso) {
+    setAvisos((anteriores) => anteriores.concat(aviso))
   }
 
   function removerUmaUnidade(produtoId) {
@@ -70,7 +81,14 @@ export default function App() {
             />
             <Route
               path="/produto/:id"
-              element={<PaginaProduto produtos={produtos} onAdicionar={adicionarAoCarrinho} />}
+              element={
+                <PaginaProduto
+                  produtos={produtos}
+                  avisos={avisos}
+                  onAdicionar={adicionarAoCarrinho}
+                  onAvisar={registrarAviso}
+                />
+              }
             />
             <Route
               path="/carrinho"
@@ -84,7 +102,7 @@ export default function App() {
                 />
               }
             />
-            <Route path="/estoque" element={<Estoque produtos={produtos} />} />
+            <Route path="/estoque" element={<Estoque produtos={produtos} avisos={avisos} />} />
           </Routes>
         )}
       </main>

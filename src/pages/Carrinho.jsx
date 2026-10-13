@@ -4,6 +4,7 @@ import SugestaoItem from '../components/SugestaoItem'
 import { agruparItens, calcularTotal } from '../utils/carrinho'
 import { validarCupom } from '../utils/cupons'
 import { formatarPreco } from '../utils/formatarPreco'
+import { podeVender } from '../utils/produtos'
 
 export default function Carrinho({ carrinho, produtos, clienteAtual, onAdicionar, onRemover }) {
   const [codigoCupom, setCodigoCupom] = useState('')
@@ -14,8 +15,9 @@ export default function Carrinho({ carrinho, produtos, clienteAtual, onAdicionar
   const total = calcularTotal(carrinho)
   const totalComDesconto = cupomAplicado ? total * (1 - cupomAplicado.desconto) : total
 
+  // Só sugere o que pode ser comprado agora: sem esgotados e sem produtos sem preço
   const sugestoes = produtos
-    .filter((produto) => !carrinho.find((item) => item.id === produto.id))
+    .filter((produto) => podeVender(produto) && !carrinho.find((item) => item.id === produto.id))
     .slice(0, 3)
 
   function aplicarCupom(evento) {
