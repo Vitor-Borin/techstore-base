@@ -1,6 +1,6 @@
 # Contrato da API
 
-Última atualização: março de 2026
+Última atualização: outubro de 2026
 
 A URL base fica na variável `VITE_API_URL`.
 
@@ -19,6 +19,13 @@ Retorna a lista de produtos do catálogo.
 | `image` | string | URL da imagem |
 | `rating` | object | `{ rate: number, count: number }` |
 | `estoque` | number | Unidades disponíveis |
+
+### Diferenças encontradas na resposta real (outubro de 2026)
+
+* Alguns produtos vêm com `price` em texto, como `"89"` e `"189.90"`.
+* Alguns produtos vêm sem o campo `price`: são os que ainda esperam o preço do time de suprimentos.
+
+O `src/services/produtos.js` converte `price` e `precoOriginal` para número, ou para `null` quando o produto não tem preço. O resto do código recebe sempre esse formato.
 
 ## GET /customers.json
 

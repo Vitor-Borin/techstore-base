@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.5.0 (outubro de 2026)
+
+* Correção do total do carrinho: os preços que a API manda como texto são convertidos para número.
+* Produtos sem preço aparecem com "Preço em breve" e não podem ser comprados.
+* Produtos esgotados não aparecem mais na loja. A página deles continua abrindo pelo link direto, com o pedido "Avise-me quando chegar".
+* Lista de espera dos esgotados na área interna, com nome e e-mail.
+* Cupom `PRIMEIRACOMPRA` validado com o cliente atual e mantido ao navegar, com mensagem explicando quando não vale.
+* Mesmo card de produto na lista, nos relacionados e nas sugestões do carrinho.
+* Frete grátis em compras acima de R$ 200 no valor final, com aviso de quanto falta no carrinho.
+
 ## 1.4.0 (setembro de 2026)
 
 * Novo visual do card de produto na lista, com avaliação e selos.
