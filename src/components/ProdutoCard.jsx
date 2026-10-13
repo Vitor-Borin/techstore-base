@@ -14,9 +14,15 @@ export default function ProdutoCard({ produto, onAdicionar }) {
         <h3 className="card-titulo">{produto.title}</h3>
       </Link>
 
-      <p className="card-avaliacao">
-        ★ {produto.rating.rate} <span>({produto.rating.count} avaliações)</span>
-      </p>
+      {produto.rating.count > 0 ? (
+        <p className="card-avaliacao">
+          ★ {produto.rating.rate} <span>({produto.rating.count} avaliações)</span>
+        </p>
+      ) : (
+        <p className="card-avaliacao">
+          <span>Sem avaliações ainda</span>
+        </p>
+      )}
 
       <div className="card-precos">
         {temPreco(produto) ? (

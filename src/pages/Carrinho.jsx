@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
-import SugestaoItem from '../components/SugestaoItem'
+import ProdutoCard from '../components/ProdutoCard'
 import { agruparItens, calcularTotal } from '../utils/carrinho'
 import { validarCupom } from '../utils/cupons'
 import { formatarPreco } from '../utils/formatarPreco'
@@ -30,7 +30,7 @@ export default function Carrinho({
   // Só sugere o que pode ser comprado agora: sem esgotados e sem produtos sem preço
   const sugestoes = produtos
     .filter((produto) => podeVender(produto) && !carrinho.find((item) => item.id === produto.id))
-    .slice(0, 3)
+    .slice(0, 4)
 
   function aplicarCupom(evento) {
     evento.preventDefault()
@@ -117,10 +117,11 @@ export default function Carrinho({
         </aside>
       </div>
 
-      <h2>Você também pode gostar</h2>
-      <div className="sugestoes">
+      {sugestoes.length > 0 && <h2>Você também pode gostar</h2>}
+      {/* Mesmo card da lista da loja, com link para o produto */}
+      <div className="grade">
         {sugestoes.map((produto) => (
-          <SugestaoItem key={produto.id} produto={produto} onAdicionar={onAdicionar} />
+          <ProdutoCard key={produto.id} produto={produto} onAdicionar={onAdicionar} />
         ))}
       </div>
     </section>
