@@ -21,6 +21,9 @@ export default function App() {
   const [clienteAtualId, setClienteAtualId] = useState(null)
   // Lista de espera dos esgotados: a página do produto grava e a área interna lê, por isso fica aqui
   const [avisos, setAvisos] = useState(() => carregarAvisos())
+  // Código do cupom aplicado. Fica aqui, e não no Carrinho, para não se perder
+  // quando o cliente sai do carrinho para ver outro produto e volta
+  const [cupomAplicado, setCupomAplicado] = useState('')
 
   useEffect(() => {
     salvarAvisos(avisos)
@@ -97,6 +100,8 @@ export default function App() {
                   carrinho={carrinho}
                   produtos={produtos}
                   clienteAtual={clienteAtual}
+                  cupomAplicado={cupomAplicado}
+                  onAplicarCupom={setCupomAplicado}
                   onAdicionar={adicionarAoCarrinho}
                   onRemover={removerUmaUnidade}
                 />

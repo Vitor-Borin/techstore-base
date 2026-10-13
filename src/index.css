@@ -789,6 +789,14 @@ h2 {
   font-weight: 600;
 }
 
+.mensagem-cupom-ok {
+  color: var(--cor-frete);
+}
+
+.mensagem-cupom-erro {
+  color: var(--cor-erro);
+}
+
 .resumo-linha,
 .total {
   display: flex;

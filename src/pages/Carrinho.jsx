@@ -6,14 +6,26 @@ import { validarCupom } from '../utils/cupons'
 import { formatarPreco } from '../utils/formatarPreco'
 import { podeVender } from '../utils/produtos'
 
-export default function Carrinho({ carrinho, produtos, clienteAtual, onAdicionar, onRemover }) {
-  const [codigoCupom, setCodigoCupom] = useState('')
-  const [cupomAplicado, setCupomAplicado] = useState(null)
-  const [mensagemCupom, setMensagemCupom] = useState('')
+export default function Carrinho({
+  carrinho,
+  produtos,
+  clienteAtual,
+  cupomAplicado,
+  onAplicarCupom,
+  onAdicionar,
+  onRemover,
+}) {
+  const [codigoCupom, setCodigoCupom] = useState(cupomAplicado || '')
 
   const itens = agruparItens(carrinho)
   const total = calcularTotal(carrinho)
-  const totalComDesconto = cupomAplicado ? total * (1 - cupomAplicado.desconto) : total
+
+  // O cupom é validado de novo a cada renderização, com o cliente atual.
+  // Antes o resultado ficava guardado no clique e continuava valendo
+  // mesmo depois de trocar de cliente (caso da Mariana, apontado pelo financeiro).
+  const resultadoCupom = cupomAplicado ? validarCupom(cupomAplicado, clienteAtual) : null
+  const desconto = resultadoCupom && resultadoCupom.valido ? resultadoCupom.desconto : 0
+  const totalComDesconto = total * (1 - desconto)
 
   // Só sugere o que pode ser comprado agora: sem esgotados e sem produtos sem preço
   const sugestoes = produtos
@@ -22,15 +34,8 @@ export default function Carrinho({ carrinho, produtos, clienteAtual, onAdicionar
 
   function aplicarCupom(evento) {
     evento.preventDefault()
-    const resultado = validarCupom(codigoCupom, clienteAtual)
-
-    if (resultado.valido) {
-      setCupomAplicado(resultado)
-      setMensagemCupom('Cupom aplicado!')
-    } else {
-      setCupomAplicado(null)
-      setMensagemCupom('Cupom inválido')
-    }
+    // Enviar o campo vazio remove o cupom
+    onAplicarCupom(codigoCupom.trim())
   }
 
   if (carrinho.length === 0) {
@@ -86,13 +91,23 @@ export default function Carrinho({ carrinho, produtos, clienteAtual, onAdicionar
               />
               <button className="botao botao-secundario">Aplicar</button>
             </div>
-            {mensagemCupom && <p className="mensagem-cupom">{mensagemCupom}</p>}
+            {resultadoCupom && (
+              <p
+                className={
+                  resultadoCupom.valido
+                    ? 'mensagem-cupom mensagem-cupom-ok'
+                    : 'mensagem-cupom mensagem-cupom-erro'
+                }
+              >
+                {resultadoCupom.mensagem}
+              </p>
+            )}
           </form>
 
-          {cupomAplicado && (
+          {desconto > 0 && (
             <p className="resumo-linha">
               <span>Desconto</span>
-              <span>{cupomAplicado.desconto * 100}%</span>
+              <span>{desconto * 100}%</span>
             </p>
           )}
           <p className="total">
