@@ -644,7 +644,7 @@ h2 {
   background: var(--cor-fundo);
 }
 
-.campo input[aria-invalid='true'] {
+.campo .input-invalido {
   border-color: var(--cor-erro);
 }
 

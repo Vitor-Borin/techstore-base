@@ -71,9 +71,8 @@ export default function PaginaProduto({ produtos, avisos, onAdicionar, onAvisar 
             </p>
           )}
 
-          {/* key: ao trocar de produto, o formulário começa do zero */}
           {esgotado ? (
-            <AvisoEstoque key={produto.id} produto={produto} avisos={avisos} onAvisar={onAvisar} />
+            <AvisoEstoque produto={produto} avisos={avisos} onAvisar={onAvisar} />
           ) : (
             <button
               className="botao botao-grande"

@@ -41,7 +41,7 @@ export default function AvisoEstoque({ produto, avisos, onAvisar }) {
   }
 
   return (
-    <form className="aviso-estoque" onSubmit={enviar} noValidate>
+    <form className="aviso-estoque" onSubmit={enviar}>
       <p className="aviso-estoque-titulo">Avise-me quando chegar</p>
       <p className="aviso-estoque-texto">
         Deixe seu contato e mandamos um e-mail assim que o produto voltar ao estoque.
@@ -55,7 +55,7 @@ export default function AvisoEstoque({ produto, avisos, onAvisar }) {
           id="aviso-nome"
           value={nome}
           onChange={(evento) => setNome(evento.target.value)}
-          aria-invalid={erros.nome ? 'true' : 'false'}
+          className={erros.nome ? 'input-invalido' : ''}
         />
         {erros.nome && <p className="erro-campo">{erros.nome}</p>}
       </div>
@@ -66,10 +66,9 @@ export default function AvisoEstoque({ produto, avisos, onAvisar }) {
         </label>
         <input
           id="aviso-email"
-          type="email"
           value={email}
           onChange={(evento) => setEmail(evento.target.value)}
-          aria-invalid={erros.email ? 'true' : 'false'}
+          className={erros.email ? 'input-invalido' : ''}
         />
         {erros.email && <p className="erro-campo">{erros.email}</p>}
       </div>
