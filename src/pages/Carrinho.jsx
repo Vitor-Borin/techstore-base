@@ -4,6 +4,11 @@ import ProdutoCard from '../components/ProdutoCard'
 import { agruparItens, calcularTotal } from '../utils/carrinho'
 import { validarCupom } from '../utils/cupons'
 import { formatarPreco } from '../utils/formatarPreco'
+import {
+  VALOR_MINIMO_FRETE_GRATIS,
+  faltaParaFreteGratis,
+  temFreteGratis,
+} from '../utils/frete'
 import { podeVender } from '../utils/produtos'
 
 export default function Carrinho({
@@ -114,6 +119,28 @@ export default function Carrinho({
             <span>Total</span>
             <span>{formatarPreco(totalComDesconto)}</span>
           </p>
+
+          {/* Frete grátis é calculado sobre o valor final, já com o desconto */}
+          <div className="frete">
+            {temFreteGratis(totalComDesconto) ? (
+              <p className="frete-texto frete-texto-ok">Você ganhou frete grátis nesta compra.</p>
+            ) : (
+              <p className="frete-texto">
+                Faltam <strong>{formatarPreco(faltaParaFreteGratis(totalComDesconto))}</strong> para
+                ganhar frete grátis.
+              </p>
+            )}
+            <progress
+              className="frete-barra"
+              value={totalComDesconto}
+              max={VALOR_MINIMO_FRETE_GRATIS}
+              aria-label="Progresso até o frete grátis"
+            />
+            <p className="frete-regra">
+              Frete grátis em compras acima de {formatarPreco(VALOR_MINIMO_FRETE_GRATIS)}, no valor
+              final com desconto.
+            </p>
+          </div>
         </aside>
       </div>
 

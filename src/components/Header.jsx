@@ -3,7 +3,10 @@ import { Link, NavLink } from 'react-router'
 export default function Header({ clienteAtual }) {
   return (
     <header className="header">
-      <p className="faixa-aviso">Troca grátis em até 30 dias · Parcele em até 10x sem juros</p>
+      <p className="faixa-aviso">
+        Frete grátis em compras acima de R$ 200 · Troca grátis em até 30 dias · Parcele em até 10x
+        sem juros
+      </p>
 
       <div className="header-conteudo">
         <Link to="/" className="logo" aria-label="TechStore, página inicial">
