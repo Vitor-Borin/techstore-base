@@ -53,7 +53,7 @@ Requisitos e regras de negócio ficam na pasta `docs/`. O histórico de mudança
 
 ## Entrega da avaliação
 
-Aluno: Vitor Borin
+Aluno: Vitor Borin, RM 573194
 
 Projeto publicado: https://techstore-base-mauve.vercel.app/
 
