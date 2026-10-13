@@ -22,6 +22,7 @@
 
 * Produtos sem preço definido não podem ser vendidos.
 * Eles aparecem na loja com "Preço em breve" e o botão de compra desabilitado.
+* Na área interna (`/estoque`), aparecem como "Aguardando preço", com o estoque já separado.
 
 ## Página do produto
 

@@ -1,3 +1,6 @@
+import { formatarPreco } from '../utils/formatarPreco'
+import { temPreco } from '../utils/produtos'
+
 // Página usada pelo time de estoque para acompanhar a quantidade de cada produto
 export default function Estoque({ produtos, avisos }) {
   // slice cria uma cópia, para o sort não alterar a lista original
@@ -18,7 +21,10 @@ export default function Estoque({ produtos, avisos }) {
     <section>
       <p className="sobretitulo">Área interna</p>
       <h1>Estoque</h1>
-      <p className="aviso">Produtos com menos de 5 unidades precisam de reposição.</p>
+      <p className="aviso">
+        Produtos com menos de 5 unidades precisam de reposição. Produtos aguardando preço têm o
+        estoque separado e só entram à venda quando o time de suprimentos definir o valor.
+      </p>
 
       <div className="tabela-moldura">
         <table className="tabela">
@@ -26,6 +32,7 @@ export default function Estoque({ produtos, avisos }) {
             <tr>
               <th>Produto</th>
               <th>Categoria</th>
+              <th>Preço</th>
               <th>Unidades</th>
               <th>Situação</th>
               <th>Aguardando</th>
@@ -36,6 +43,13 @@ export default function Estoque({ produtos, avisos }) {
               <tr key={produto.id}>
                 <td>{produto.title}</td>
                 <td>{produto.category}</td>
+                <td>
+                  {temPreco(produto) ? (
+                    formatarPreco(produto.price)
+                  ) : (
+                    <span className="selo selo-alerta">Aguardando preço</span>
+                  )}
+                </td>
                 <td>{produto.estoque}</td>
                 <td>
                   {produto.estoque === 0 && <span className="selo selo-esgotado">Esgotado</span>}

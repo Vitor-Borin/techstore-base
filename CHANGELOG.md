@@ -10,6 +10,7 @@
 * Mesmo card de produto na lista, nos relacionados e nas sugestões do carrinho.
 * Frete grátis em compras acima de R$ 200 no valor final, com aviso de quanto falta no carrinho.
 * Página do produto mostra o preço original riscado nas promoções, como o card, e "Sem avaliações ainda" nos produtos sem nota.
+* Área interna com a coluna de preço, marcando os produtos que aguardam o preço do time de suprimentos.
 
 ## 1.4.0 (setembro de 2026)
 
