@@ -9,7 +9,6 @@ import Carrinho from './pages/Carrinho'
 import Estoque from './pages/Estoque'
 import { buscarProdutos } from './services/produtos'
 import { buscarClientes } from './services/clientes'
-import { carregarAvisos, salvarAvisos } from './services/avisos'
 import { podeVender } from './utils/produtos'
 
 export default function App() {
@@ -19,15 +18,12 @@ export default function App() {
   const [carrinho, setCarrinho] = useState([])
   const [clientes, setClientes] = useState([])
   const [clienteAtualId, setClienteAtualId] = useState(null)
-  // Lista de espera dos esgotados: a página do produto grava e a área interna lê, por isso fica aqui
-  const [avisos, setAvisos] = useState(() => carregarAvisos())
+  // Lista de espera dos esgotados: a página do produto grava e a área interna lê, por isso fica aqui.
+  // A API é só leitura, então a lista vale enquanto a loja está aberta, como o carrinho.
+  const [avisos, setAvisos] = useState([])
   // Código do cupom aplicado. Fica aqui, e não no Carrinho, para não se perder
   // quando o cliente sai do carrinho para ver outro produto e volta
   const [cupomAplicado, setCupomAplicado] = useState('')
-
-  useEffect(() => {
-    salvarAvisos(avisos)
-  }, [avisos])
 
   useEffect(() => {
     buscarProdutos()

@@ -70,4 +70,4 @@ O `.env` veio no projeto base e só guarda a URL pública da API, sem chave nem 
 
 ### Onde fica a lista de espera
 
-A API é só leitura, então a lista de espera fica salva no navegador (`localStorage`), isolada em `src/services/avisos.js`. Quando existir um endpoint para gravar os pedidos, só esse arquivo precisa mudar.
+A API é só leitura (arquivos JSON), então não há onde gravar os pedidos de aviso. A lista fica no estado do `App`, o pai comum da página do produto (que grava) e da área interna (que lê), e vale enquanto a loja está aberta, como o carrinho. Quando a API aceitar gravação, o `registrarAviso` do `App` passa a enviar o pedido para ela.
