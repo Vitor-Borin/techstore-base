@@ -9,6 +9,7 @@ import Carrinho from './pages/Carrinho'
 import Estoque from './pages/Estoque'
 import { buscarProdutos } from './services/produtos'
 import { buscarClientes } from './services/clientes'
+import { podeVender } from './utils/produtos'
 
 export default function App() {
   const [produtos, setProdutos] = useState([])
@@ -31,7 +32,9 @@ export default function App() {
   }, [])
 
   function adicionarAoCarrinho(produto) {
-    setCarrinho(carrinho.concat(produto))
+    // Todo botão de compra passa por aqui, então a regra de venda vale para a loja inteira
+    if (!podeVender(produto)) return
+    setCarrinho((anterior) => anterior.concat(produto))
   }
 
   function removerUmaUnidade(produtoId) {
